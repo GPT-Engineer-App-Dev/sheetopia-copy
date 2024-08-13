@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Input } from '@/components/ui/input';
 import { evaluateFormula } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
-const Cell = ({ value, onChange, data, rowIndex, colIndex }) => {
+const Cell = ({ value, onChange, data, rowIndex, colIndex, format, onSelect }) => {
   const [editing, setEditing] = useState(false);
   const [cellValue, setCellValue] = useState(value);
   const inputRef = useRef(null);
@@ -32,10 +33,21 @@ const Cell = ({ value, onChange, data, rowIndex, colIndex }) => {
 
   const displayValue = editing ? cellValue : evaluateFormula(cellValue, data);
 
+  const cellClass = cn(
+    "w-full h-full border-r border-b border-gray-300 flex items-center overflow-hidden",
+    format?.bold && "font-bold",
+    format?.italic && "italic",
+    format?.underline && "underline",
+    format?.alignLeft && "justify-start",
+    format?.alignCenter && "justify-center",
+    format?.alignRight && "justify-end"
+  );
+
   return (
     <div
-      className="w-full h-full border-r border-b border-gray-300 flex items-center overflow-hidden"
+      className={cellClass}
       onDoubleClick={handleDoubleClick}
+      onClick={() => onSelect(rowIndex, colIndex)}
     >
       {editing ? (
         <Input

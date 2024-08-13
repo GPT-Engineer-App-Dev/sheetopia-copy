@@ -5,7 +5,7 @@ import { columnToLetter } from '@/lib/utils';
 const ROWS = 100;
 const COLS = 26;
 
-const Grid = ({ data, updateCell }) => {
+const Grid = ({ data, updateCell, cellFormats, setSelectedCell }) => {
   const [columnWidths, setColumnWidths] = useState(Array(COLS).fill(100));
   const [resizing, setResizing] = useState(null);
 
@@ -66,6 +66,8 @@ const Grid = ({ data, updateCell }) => {
               data={data}
               rowIndex={rowIndex}
               colIndex={colIndex}
+              format={cellFormats[`${columnToLetter(colIndex + 1)}${rowIndex + 1}`]}
+              onSelect={() => setSelectedCell(`${columnToLetter(colIndex + 1)}${rowIndex + 1}`)}
             />
           </div>
         ))}
